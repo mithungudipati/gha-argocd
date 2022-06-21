@@ -13,6 +13,7 @@ on: [pull_request]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: sandbox
     steps:
       - name: CHECKOUT
         uses: actions/checkout@v2
@@ -47,7 +48,6 @@ jobs:
           files: 'kustomize/overlays/dev/*.yaml'
         env:
           nameSuffix: ${{ steps.pr.outputs.pull_request_number }}
-      - run: "cat /home/runner/work/kustomize-argocd/kustomize-argocd/kustomize/overlays/dev/kustomization.yaml"
       - uses: clowdhaus/argo-cd-action/@main
         with:
           version: 2.3.3

@@ -8,6 +8,7 @@ on:
 jobs:
   delete-pr-namespace:
     runs-on: ubuntu-latest
+    environment: sandbox
     steps:
       - name: Get Pull Request Number
         id: pr
