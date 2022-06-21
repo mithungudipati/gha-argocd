@@ -1,0 +1,27 @@
+name: PR Closed
+
+on:
+  pull_request:
+    types: [closed]
+
+
+jobs:
+  delete-pr-namespace:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Pull Request Number
+        id: pr
+        run: echo "::set-output name=pull_request_number::$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: clowdhaus/argo-cd-action/@main
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          version: 2.3.3
+          command: app delete ${{ steps.pr.outputs.pull_request_number}}-kustomize-argocd-ex
+          options: |
+           --server 20.228.121.230
+           --insecure 
+           -y
+           --auth-token ${{ secrets.ARGOCD_TOKEN }} 
+ 
