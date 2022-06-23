@@ -63,4 +63,5 @@ jobs:
            --kustomize-image alpine:3.10=${{ steps.meta.outputs.tags }}@${{ steps.build.outputs.digest }} 
            --auth-token ${{ secrets.ARGOCD_TOKEN }} 
            --project apps2deploy
+           --plugin-env "PR_NUMBER=${{ steps.pr.outputs.pull_request_number }}"
     
