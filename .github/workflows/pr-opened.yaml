@@ -43,25 +43,12 @@ jobs:
         run: echo "::set-output name=pull_request_number::$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: microsoft/variable-substitution@v1 
-        with:
-          files: 'kustomize/overlays/dev/*.yaml'
-        env:
-          nameSuffix: ${{ steps.pr.outputs.pull_request_number }}
       - uses: clowdhaus/argo-cd-action/@main
         with:
           version: 2.3.3
-          command: app create pr${{ steps.pr.outputs.pull_request_number }}-kustomize-argocd-ex
-          options: |
-           --server ${{ secrets.ARGOCD_SERVER }}
-           --insecure --upsert --sync-policy auto --sync-option CreateNamespace=true 
-           --repo https://github.com/${{ github.repository }}.git 
-           --revision ${{github.sha}} 
-           --path kustomize/overlays/dev 
-           --dest-namespace pr${{ steps.pr.outputs.pull_request_number }}-microservices 
-           --dest-server https://kubernetes.default.svc 
-           --kustomize-image alpine:3.10=${{ steps.meta.outputs.tags }}@${{ steps.build.outputs.digest }} 
-           --auth-token ${{ secrets.ARGOCD_TOKEN }} 
-           --project apps2deploy
-           --plugin-env "PR_NUMBER=${{ steps.pr.outputs.pull_request_number }}"
+      - name: Run Argo Script
+        id: argo-wrapper
+        run: ./.github/scripts/argo.sh --appname pr${{ steps.pr.outputs.pull_request_number}}-kustomize-argocd-ex --server 20.253.152.212 --repo https://github.com/${{ github.repository }}.git --revision ${{github.sha}} --path kustomize/overlays/dev --dest-namespace develop-microservices --image alpine:3.10=${{ steps.meta.outputs.tags }}@${{ steps.build.outputs.digest }} --auth-token ${{ secrets.ARGOCD_TOKEN }} --project apps2deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     

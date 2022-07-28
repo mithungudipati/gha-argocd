@@ -11,6 +11,8 @@ nameSuffix: -dv
 patchesStrategicMerge:
 - deployment_env.yaml
 
+transformers:
+- template-transformer.yaml
 
 configMapGenerator:
   - name: app-config
@@ -22,5 +24,3 @@ secretGenerator:
     type: Opaque
     literals:
       - password=demo
-transformers:
-- ./envsubtransformer.yaml

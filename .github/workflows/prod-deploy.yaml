@@ -42,7 +42,7 @@ jobs:
           version: 2.3.3
           command: app set develop-kustomize-argocd-ex
           options: |
-           --server ${{ secrets.ARGOCD_SERVER }}
+           --server 20.253.152.212
            --insecure --sync-policy auto --sync-option CreateNamespace=true 
            --repo https://github.com/${{ github.repository }}.git 
            --revision ${{github.sha}} 

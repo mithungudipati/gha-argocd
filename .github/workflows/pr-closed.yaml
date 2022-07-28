@@ -19,9 +19,9 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           version: 2.3.3
-          command: app delete ${{ steps.pr.outputs.pull_request_number}}-kustomize-argocd-ex
+          command: app delete pr${{ steps.pr.outputs.pull_request_number}}-kustomize-argocd-ex
           options: |
-           --server ${{ secrets.ARGOCD_SERVER }}
+           --server 20.253.152.212
            --insecure 
            -y
            --auth-token ${{ secrets.ARGOCD_TOKEN }} 
