@@ -1,0 +1,49 @@
+apiVersion: jdk.sh/v1beta1
+kind: TemplateTransformer
+
+metadata:
+  name: example
+
+properties:
+  - name: VERSION
+    description: Current application version
+    source:
+     - ARGOCD_APP_REVISION
+  - name: ARGOCD_APP_NAME
+    description: ARGOCD_APP_NAME
+    source:
+     - ARGOCD_APP_NAME
+  - name: PR_NUMBER
+    description: PR Number
+    source:
+     - ARGOCD_APP_NAME
+    mutate:
+      pattern: pr(.*?)-
+      replace: $1
+  - name: ARGOCD_APP_NAMESPACE
+    description: ARGOCD_APP_NAMESPACE
+    source:
+     - ARGOCD_APP_NAMESPACE
+  - name: ARGOCD_APP_REVISION
+    description: ARGOCD_APP_REVISION
+    source:
+     - ARGOCD_APP_REVISION
+  # - name: ARGOCD_APP_SOURCE_PATH
+  #   description: ARGOCD_APP_SOURCE_PATH
+  #   source:
+  #    - ARGOCD_APP_SOURCE_PATH
+  #   mutate:
+  #     pattern: \\
+  #     replace: -
+  # - name: ARGOCD_APP_SOURCE_REPO_URL
+  #   description: ARGOCD_APP_SOURCE_REPO_URL
+  #   source:
+  #    - ARGOCD_APP_SOURCE_REPO_URL
+  - name: ARGOCD_APP_SOURCE_TARGET_REVISION
+    description: ARGOCD_APP_SOURCE_TARGET_REVISION
+    source:
+     - ARGOCD_APP_SOURCE_TARGET_REVISION
+  # - name: KUBE_VERSION
+  #   description: KUBE_VERSION
+  #   source:
+  #    - KUBE_VERSION

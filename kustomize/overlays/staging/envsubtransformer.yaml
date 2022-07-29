@@ -1,0 +1,4 @@
+apiVersion: kustomize.bitgo.org
+kind: EnvSubTransformer
+metadata:
+  name: envSub

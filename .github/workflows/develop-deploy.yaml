@@ -7,6 +7,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: CHECKOUT
         uses: actions/checkout@v2
@@ -36,12 +37,15 @@ jobs:
         run: echo "::set-output name=pull_request_number::$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Argo Script
+        id: argo-wrapper
+        run: ./.github/scripts/argo.sh --server 20.253.152.212 --repo https://github.com/${{ github.repository }}.git --revision ${{github.sha}} --path kustomize/overlays/dev --dest-namespace develop-microservices --image alpine:3.10=${{ steps.meta.outputs.tags }}@${{ steps.build.outputs.digest }} --auth-token ${{ secrets.ARGOCD_TOKEN }} --project apps2deploy 
       - uses: clowdhaus/argo-cd-action/@main
         with:
           version: 2.3.3
           command: app set develop-kustomize-argocd-ex
           options: |
-           --server 20.228.121.230
+           --server 20.253.152.212
            --insecure --sync-policy auto --sync-option CreateNamespace=true 
            --repo https://github.com/${{ github.repository }}.git 
            --revision ${{github.sha}} 

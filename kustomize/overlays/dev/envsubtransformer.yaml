@@ -1,0 +1,4 @@
+apiVersion: kustomize.gudipati.org
+kind: EnvSubTransformer
+metadata:
+  name: envSub
