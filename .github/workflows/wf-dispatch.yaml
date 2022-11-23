@@ -1,0 +1,17 @@
+name: Deploy to Environments
+
+on:
+  workflow_dispatch:
+    branches:
+      - master
+    inputs:
+      environment:
+        description: 'Deploy Marketing Site to Environment'
+        required: true
+
+jobs:
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    if:  ${{ (github.event.inputs.environment == 'dev' ) }}
+    steps:
+      - run: echo ${{ github.sha }}
