@@ -4,6 +4,16 @@ metadata:
   name: my-app
 spec:
   template:
+    metadata:
+      labels:
+        prnumber: 'PR-${{.PR_NUMBER}}'
+        ARGOCD_APP_NAME: ${{.ARGOCD_APP_NAME}}
+        ARGOCD_APP_NAMESPACE: ${{.ARGOCD_APP_NAMESPACE}}
+        ARGOCD_APP_REVISION: ${{.ARGOCD_APP_REVISION}}
+        # ARGOCD_APP_SOURCE_PATH: ${{.ARGOCD_APP_SOURCE_PATH}}
+        #ARGOCD_APP_SOURCE_REPO_URL: ${{.ARGOCD_APP_SOURCE_REPO_URL}}
+        ARGOCD_APP_SOURCE_TARGET_REVISION: ${{.ARGOCD_APP_SOURCE_TARGET_REVISION}}
+        # KUBE_VERSION: ${{.KUBE_VERSION}}
     spec:
       containers:
       - name: my-app
